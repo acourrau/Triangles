@@ -37,7 +37,7 @@ namespace TriangleApi.Controllers
                     throw new Exception();
                 }
                 
-                Triangle result = createTriangle(col, row);
+                Triangle result = new Triangle(col, row, TRIANGLE_SIZE);
                 result.name = id;
                 return result;
             } catch {
@@ -112,23 +112,6 @@ namespace TriangleApi.Controllers
             }
 
             return msgs;
-        }
-
-        private Triangle createTriangle(int col, int row) {
-            // Point 1x = floor((col-1)/2) * TRIANGLE_SIZE
-            // Point 1y = (row - 1) * TRIANGLE_SIZE
-            Point p1 = new Point(TRIANGLE_SIZE * (int)(Math.Floor((double) ((col - 1)/2)) ), 
-                                 TRIANGLE_SIZE * (row - 1));
-            // Point 2x = floor((col)/2) * TRIANGLE_SIZE
-            // Point 2y = ((col % 2) + (row - 1)) * TRIANGLE_SIZE
-            Point p2 = new Point(TRIANGLE_SIZE * (int)(Math.Floor((double) (col/2) )),
-                                 TRIANGLE_SIZE * ((col % 2) + (row - 1)) );
-            // Point 3x = (floor((col-1)/2) + 1) * TRIANGLE_SIZE
-            // Point 3y = row * TRIANGLE_SIZE
-            Point p3 = new Point(TRIANGLE_SIZE * ((int)(Math.Floor((double) ((col - 1)/2))) + 1),
-                                 TRIANGLE_SIZE * row);
-
-            return new Triangle(p1,p2,p3);
         }
 
         private string TriangleName(Triangle tri) {

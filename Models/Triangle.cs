@@ -1,3 +1,5 @@
+using System;
+
 namespace TriangleApi.Models
 {
     public class Triangle
@@ -25,6 +27,44 @@ namespace TriangleApi.Models
             points[0] = new Point(x1, y1);
             points[1] = new Point(x2, y2);
             points[2] = new Point(x3, y3);
+        }
+
+        public Triangle(int col, int row, int triangle_size) {
+            points = new Point[3];
+
+            // Point 1x = floor((col-1)/2) * TRIANGLE_SIZE
+            // Point 1y = (row - 1) * TRIANGLE_SIZE
+            points[0] = new Point(triangle_size * (int)(Math.Floor((double) ((col - 1)/2)) ), 
+                                 triangle_size * (row - 1));
+            // Point 2x = floor((col)/2) * TRIANGLE_SIZE
+            // Point 2y = ((col % 2) + (row - 1)) * TRIANGLE_SIZE
+            points[1] = new Point(triangle_size * (int)(Math.Floor((double) (col/2) )),
+                                 triangle_size * ((col % 2) + (row - 1)) );
+            // Point 3x = (floor((col-1)/2) + 1) * TRIANGLE_SIZE
+            // Point 3y = row * TRIANGLE_SIZE
+            points[2] = new Point(triangle_size * ((int)(Math.Floor((double) ((col - 1)/2))) + 1),
+                                 triangle_size * row);
+        }
+
+        public string TriangleName(Triangle tri) {
+            int highestX = int.MinValue;
+            int secondX = int.MinValue;
+            int highestY = int.MinValue;
+
+            foreach(Point p in tri.points) {
+                if (p.X >= highestX) {
+                    secondX = highestX;
+                    highestX = p.X;
+                }
+                if (p.Y > highestY) {
+                    highestY = p.Y;
+                }
+            }
+
+            string col = ((highestX + secondX) / TRIANGLE_SIZE).ToString();
+            string row = (string)Enum.GetName(typeof(Rows), (int)(highestY / TRIANGLE_SIZE));
+
+            return row + col;
         }
 
         public bool HasPoint(Point test) {
